@@ -34,10 +34,10 @@ floating_modifier $alt
 bindsym $mod+f fullscreen toggle
 
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym $mod+Shift+b split h
 
 # split in vertical orientation
-bindsym $mod+v split v
+bindsym $mod+Shift+v split v
 
 
 # change container layout (stacked, tabbed, toggle split)
@@ -59,10 +59,10 @@ bindsym $mod+Ctrl+space move workspace to output right
 ##################
 
 # on keysym
-bindsym $mod+Return exec gnome-terminal
-bindsym $mod+shift+Return exec nemo
-bindsym $mod+shift+f exec chromium-browser
-bindsym $mod+m exec cinnamon-settings
+bindsym $mod+Return exec xterm
+#bindsym $mod+shift+Return exec nemo
+bindsym $mod+shift+f exec qutebrowser
+#bindsym $mod+m exec cinnamon-settings
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec dmenu_run
@@ -70,6 +70,7 @@ bindsym $mod+d exec dmenu_run
 # autorun
 
 exec --no-startup-id numlockx on
+exec --no-startup-id feh --bg-scale ~/Docs/3dcg/backgrounds/cubes/render.png
 
 ###############
 #### audio ####
@@ -81,6 +82,12 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id "amixer -D pulse sset Master '
 bindcode $mod+34 exec --no-startup-id "amixer -D pulse sset Master '5%-'"
 # OS+]
 bindcode $mod+35 exec --no-startup-id "amixer -D pulse sset Master '5%+'"
+
+# OS+Shift+[
+bindcode $mod+Shift+34 exec --no-startup-id "amixer -D pulse sset Master toggle"
+
+# OS+Shift+[
+bindcode $mod+Shift+35 exec --no-startup-id "amixer -D pulse sset Master toggle"
 
 
 bindsym XF86AudioMute exec --no-startup-id "amixer -D pulse sset Master toggle"
@@ -94,17 +101,16 @@ bindsym XF86MonBrightnessDown exec light -a -U 10
 #### screenshot ####
 #####################
 
-bindsym Print exec gnome-screenshot -i
-bindsym Shift+Print exec gnome-screenshot
+bindsym Print exec flameshot gui
 
 #####################
 #### change focus ####
 ######################
 # jkl;
-bindsym $mod+j focus left
+bindsym $mod+h focus left
 bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+bindsym $mod+j focus up
+bindsym $mod+l focus right
 
 # arrow keys
 bindsym $mod+Left focus left
@@ -124,10 +130,10 @@ bindsym $mod+KP_Right focus right
 ######################
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -151,6 +157,7 @@ bindsym $mod+Shift+z scratchpad show
 #assign [class="MuseScore2"] 5
 #assign [class="qsynth"] 5
 #assign [class="OpenSCAD"] 6
+for_window [class="Spotify"] move to workspace 6
 #assign [class="cura"] 6
 #assign [class="krita"] 7
 #assign [class="Blender"] 7
@@ -158,12 +165,13 @@ bindsym $mod+Shift+z scratchpad show
 #assign [title="Messenger*"] 8
 assign [class="discord"] 8
 assign [class="Thunderbird"] 8
+assign [class="qsynth"] 9
 
 ##################################
 #### auto launch on workspace ####
 ##################################
 
-bindsym $mod+F4 mode "$programming"
+#bindsym $mod+F4 mode "$programming"
 set $programming [W]ebstorm | [A]ndroidStudio | [T]oolbox | [N]etbeans
 mode "$programming" {
     bindsym w exec --no-startup-id webstorm; focus; mode "default"
@@ -175,10 +183,11 @@ mode "$programming" {
     bindsym Escape mode "default"
     bindsym Return mode "default"
 }
-bindsym $mod+F5 exec audacity, exec musescore #, exec qsyntH
-bindsym $mod+F6 exec exec openscad, exec cura
-bindsym $mod+F7 exec krita, exec blender, exec gimp
-bindsym $mod+F8 exec thunderbird, exec discord
+#bindsym $mod+F5 exec audacity, exec musescore #, exec qsyntH
+bindsym $mod+F6 exec spotify
+#bindsym $mod+F7 exec krita, exec blender, exec gimp
+bindsym $mod+F8 exec thunderbird, exec discord-ptb
+bindsym $mod+F9 exec qsynth
 
 
 ####################
@@ -286,7 +295,7 @@ bindsym $mod+b bar mode toggle
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+        status_command i3status -c /home/fguilini/.config/i3/i3status.conf
 	
     #bar colours
     colors {
