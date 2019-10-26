@@ -59,57 +59,58 @@ bindsym $mod+Ctrl+space move workspace to output right
 ##################
 
 # on keysym
-bindsym $mod+Return exec xterm
+bindsym $mod+Return exec --no-startup-id xterm
 #bindsym $mod+shift+Return exec nemo
-bindsym $mod+shift+f exec qutebrowser
+bindsym $mod+shift+f exec --no-startup-id qutebrowser
 #bindsym $mod+m exec cinnamon-settings
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec --no-startup-id dmenu_run
 
 # autorun
 
-exec --no-startup-id numlockx on
-exec --no-startup-id feh --bg-scale ~/Docs/3dcg/backgrounds/cubes/render.png
+#exec --no-startup-id numlockx on
+#exec --no-startup-id feh --bg-scale ~/Docs/3dcg/backgrounds/cubes/render.png
+exec --no-startup-id libinput-gestures-setup start
 
 ###############
 #### audio ####
 ###############
 
-bindsym XF86AudioLowerVolume exec --no-startup-id "amixer -D pulse sset Master '5%-'"
-bindsym XF86AudioRaiseVolume exec --no-startup-id "amixer -D pulse sset Master '5%+'"
+bindsym XF86AudioLowerVolume exec --no-startup-id "amixer sset Master '5%-'"
+bindsym XF86AudioRaiseVolume exec --no-startup-id "amixer sset Master '5%+'"
 # OS+[
-bindcode $mod+34 exec --no-startup-id "amixer -D pulse sset Master '5%-'"
+bindcode $mod+34 exec --no-startup-id "amixer sset Master '5%-'"
 # OS+]
-bindcode $mod+35 exec --no-startup-id "amixer -D pulse sset Master '5%+'"
+bindcode $mod+35 exec --no-startup-id "amixer sset Master '5%+'"
 
 # OS+Shift+[
-bindcode $mod+Shift+34 exec --no-startup-id "amixer -D pulse sset Master toggle"
+bindcode $mod+Shift+34 exec --no-startup-id "amixer sset Master toggle"
 
 # OS+Shift+[
-bindcode $mod+Shift+35 exec --no-startup-id "amixer -D pulse sset Master toggle"
+bindcode $mod+Shift+35 exec --no-startup-id "amixer sset Master toggle"
 
 
-bindsym XF86AudioMute exec --no-startup-id "amixer -D pulse sset Master toggle"
+bindsym XF86AudioMute exec --no-startup-id "amixer sset Master toggle"
 ####################
 #### brichtness ####
 ####################
 
-bindsym XF86MonBrightnessUp exec light -a -A 10
-bindsym XF86MonBrightnessDown exec light -a -U 10
+bindsym XF86MonBrightnessUp exec --no-startup-id light -a -A 10
+bindsym XF86MonBrightnessDown exec --no-startup-id light -a -U 10
 ####################
 #### screenshot ####
 #####################
 
-bindsym Print exec flameshot gui
+bindsym Print exec --no-startup-id flameshot gui
 
 #####################
 #### change focus ####
 ######################
 # jkl;
 bindsym $mod+h focus left
-bindsym $mod+k focus down
-bindsym $mod+j focus up
+bindsym $mod+k focus up
+bindsym $mod+j focus down
 bindsym $mod+l focus right
 
 # arrow keys
@@ -165,6 +166,8 @@ for_window [class="Spotify"] move to workspace 6
 #assign [title="Messenger*"] 8
 assign [class="discord"] 8
 assign [class="Thunderbird"] 8
+assign [class="Slack"] 8
+assign [class="Caprine"] 8
 assign [class="qsynth"] 9
 
 ##################################
@@ -184,10 +187,10 @@ mode "$programming" {
     bindsym Return mode "default"
 }
 #bindsym $mod+F5 exec audacity, exec musescore #, exec qsyntH
-bindsym $mod+F6 exec spotify
+bindsym $mod+F6 exec --no-startup-id spotify
 #bindsym $mod+F7 exec krita, exec blender, exec gimp
-bindsym $mod+F8 exec thunderbird, exec discord-ptb
-bindsym $mod+F9 exec qsynth
+bindsym $mod+F8 exec --no-startup-id thunderbird, exec --no-startup-id discord, exec --no-startup-id slack, exec --no-startup-id caprine
+bindsym $mod+F9 exec --no-startup-id qsynth
 
 
 ####################
@@ -239,22 +242,22 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 #########################
 #### system shutdown ####
 #########################
 
-set $shutdown [s]hutdown [l]ock [r]eboot lo[g]out
+set $shutdown [s]hutdown [l]ock [r]eboot(disabled) [h]ibernate(disabled)
 
 bindsym $mod+x mode "$shutdown"
 
 mode "$shutdown" {
 	
-	bindsym s mode "default" , exec shutdown now
-	bindsym r mode "default" , exec reboot
-	bindsym l mode "default" , exec ~/bin/fuzzy-lock
-	bindsym g mode "default" , exec i3-msg exit
+	bindsym s mode "default" , exec --no-startup-id shutdown now
+	#bindsym r mode "default" , exec reboot
+	bindsym l mode "default" , exec --no-startup-id ~/bin/fuzzy-lock
+	#bindsym h mode "default" , exec systemctl hibernate
 	# exit
 	bindsym Return mode "default"
 	bindsym Escape mode "default"
