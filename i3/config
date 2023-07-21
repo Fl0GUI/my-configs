@@ -14,7 +14,7 @@ set $alt Mod1
 ##############
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 8
+font pango:ProFont 8
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -52,27 +52,33 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # swap workspace between screens
-bindsym $mod+Ctrl+space move workspace to output right
+bindsym $mod+Ctrl+space move workspace to output next
 
 ##################
 #### launcher ####
 ##################
 
 # on keysym
-bindsym $mod+Return exec --no-startup-id xterm
+bindsym $mod+Return exec --no-startup-id xfce4-terminal
 #bindsym $mod+shift+Return exec nemo
 bindsym $mod+shift+f exec --no-startup-id qutebrowser
+#bindsym $mod+shift+f exec --no-startup-id firefox
 #bindsym $mod+m exec cinnamon-settings
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id dmenu_run
+# bindsym $mod+d exec --no-startup-id dmenu_run
+
+# rofi, same but better
+bindsym $mod+d exec --no-startup-id rofi -show run
+
+# nnn
+bindsym $mod+n exec --no-startup-id xterm nnn
 
 # autorun
 
 #exec --no-startup-id numlockx on
-#exec --no-startup-id feh --bg-scale ~/Docs/3dcg/backgrounds/cubes/render.png
+exec --no-startup-id feh --bg-max ~/docs/pics/nasa/latest.*
 exec --no-startup-id libinput-gestures-setup start
-
 ###############
 #### audio ####
 ###############
@@ -93,7 +99,7 @@ bindcode $mod+Shift+35 exec --no-startup-id "amixer sset Master toggle"
 
 bindsym XF86AudioMute exec --no-startup-id "amixer sset Master toggle"
 ####################
-#### brichtness ####
+#### brightness ####
 ####################
 
 bindsym XF86MonBrightnessUp exec --no-startup-id light -a -A 10
@@ -102,7 +108,10 @@ bindsym XF86MonBrightnessDown exec --no-startup-id light -a -U 10
 #### screenshot ####
 #####################
 
-bindsym Print exec --no-startup-id flameshot gui
+#bindsym Print exec --no-startup-id teiler --quick image area
+#bindsym Shift+Print exec --no-startup-id teiler --quick image fullscreen
+bindsym Print exec --no-startup-id flameshot gui 
+bindsym Shift+Print exec --no-startup-id flameshot screen
 
 #####################
 #### change focus ####
@@ -130,7 +139,7 @@ bindsym $mod+KP_Right focus right
 #### move windows ####
 ######################
 
-# move focused window
+#move focused window
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
@@ -164,33 +173,35 @@ for_window [class="Spotify"] move to workspace 6
 #assign [class="Blender"] 7
 #assign [class="Gimp"] 7
 #assign [title="Messenger*"] 8
-assign [class="discord"] 8
-assign [class="Thunderbird"] 8
-assign [class="Slack"] 8
-assign [class="Caprine"] 8
-assign [class="qsynth"] 9
+assign [class="Ferdi"] 8
+for_window [class="Ferdi"] move to workspace 8
+assign [class="Qsynth"] 9
+for_window [class="Xsnow"] floating enabled;border none
+
+# float notifications
+for_window [window_type="notification"] floating enable
+
+########################
+#### borders format ####
+########################
+for_window [class=".*"] border normal
+for_window [class="st-256color"] border pixel 0
+for_window [class="Xfce4-terminal"] border pixel 0
+for_window [class="Ferdi"] border pixel 0
+for_window [class="Spotify"] border pixel 0
+for_window [class="srb2kart"] border pixel 0
+for_window [class="Steam"] border pixel 0
+
 
 ##################################
 #### auto launch on workspace ####
 ##################################
 
-#bindsym $mod+F4 mode "$programming"
-set $programming [W]ebstorm | [A]ndroidStudio | [T]oolbox | [N]etbeans
-mode "$programming" {
-    bindsym w exec --no-startup-id webstorm; focus; mode "default"
-    bindsym a exec --no-startup-id androidstudio; focus; mode "default"
-    bindsym t exec --no-startup-id toolbox; focus; mode "default"
-    bindsym n exec --no-startup-id netbeans; focus; mode "default"
-    
-    
-    bindsym Escape mode "default"
-    bindsym Return mode "default"
-}
 #bindsym $mod+F5 exec audacity, exec musescore #, exec qsyntH
 bindsym $mod+F6 exec --no-startup-id spotify
 #bindsym $mod+F7 exec krita, exec blender, exec gimp
-bindsym $mod+F8 exec --no-startup-id thunderbird, exec --no-startup-id discord, exec --no-startup-id slack, exec --no-startup-id caprine
-bindsym $mod+F9 exec --no-startup-id qsynth
+bindsym $mod+F8 exec --no-startup-id ferdi
+#bindsym $mod+F9 exec --no-startup-id qsynth
 
 
 ####################
@@ -244,27 +255,43 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-#########################
-#### system shutdown ####
-#########################
+###############
+#### Modes ####
+###############
 
-set $shutdown [s]hutdown [l]ock [r]eboot(disabled) [h]ibernate(disabled)
+set $yee [t]oggle o[n] o[f]
+
+bindsym $mod+y mode "$yee"
+
+mode "$yee" {
+
+        bindsym t mode "default", exec --no-startup-id ~/go/bin/yeelight -c toggle
+        bindsym n mode "default", exec --no-startup-id ~/bin/yee turn on
+        bindsym f mode "default", exec --no-startup-id ~/bin/yee turn off
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+set $shutdown [s]hutdown [l]ock [r]eboot [h]ibernate
 
 bindsym $mod+x mode "$shutdown"
 
 mode "$shutdown" {
 	
 	bindsym s mode "default" , exec --no-startup-id shutdown now
-	#bindsym r mode "default" , exec reboot
+	bindsym r mode "default" , exec reboot
 	bindsym l mode "default" , exec --no-startup-id ~/bin/fuzzy-lock
-	#bindsym h mode "default" , exec systemctl hibernate
+	bindsym h mode "default" , exec systemctl hibernate
 	# exit
 	bindsym Return mode "default"
 	bindsym Escape mode "default"
 }
 
 
-# resize window (you can also use the mouse for that)
+
+bindsym $mod+r mode "resize"
+
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
 
@@ -272,10 +299,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
@@ -288,7 +315,24 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
-bindsym $mod+r mode "resize"
+set $xrandr [a]uto [l]eft [r]ight [u]p [d]uplicate [o]ff
+
+bindsym $mod+p exec xrandr --auto
+bindsym $mod+Control+r mode "$xrandr"
+
+mode "$xrandr" {
+        bindsym a mode "default", exec --no-startup-id xrandr --auto; exec --no-startup-id libinput-gestures-setup restart;
+        bindsym l mode "default", exec --no-startup-id xrandr --output HDMI1 --auto --left-of eDP1 --mode 2560x1080; exec --no-startup-id xinput --map-to-output "Wacom Intuos PT S 2 Pen stylus" HDMI1; exec --no-startup-id libinput-gestures-setup restart; exec --no-startup-id xrandr --output HDMI1 --primary;
+        bindsym r mode "default", exec --no-startup-id xrandr --auto --output HDMI1 --auto --right-of eDP1; exec --no-startup-id xinput --map-to-output "Wacom Intuos PT S 2 Pen stylus" HDMI1; exec --no-startup-id libinput-gestures-setup restart; exec --no-startup-id xrandr --output HDMI1 --primary;
+        bindsym u mode "default", exec --no-startup-id xrandr --auto --output HDMI1 --auto --above eDP1; exec --no-startup-id xinput --map-to-output "Wacom Intuos PT S 2 Pen stylus" HDMI1; exec --no-startup-id libinput-gestures-setup restart; exec --no-startup-id xrandr --output HDMI1 --primary;
+        bindsym d mode "default", exec --no-startup-id xrandr --auto --output HDMI1 --auto --same-as eDP1; exec --no-startup-id libinput-gestures-setup restart; exec --no-startup-id xrandr --output HDMI1 --primary;
+        bindsym o mode "default", exec --no-startup-id xrandr --output HDMI1 --off; ; exec --no-startup-id xrand --output eDP1 --auto ; exec --no-startup-id libinput-gestures-setup restart;
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
 
 ########################
 ####     i3 bar     ####
@@ -298,7 +342,7 @@ bindsym $mod+b bar mode toggle
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status -c /home/fguilini/.config/i3/i3status.conf
+        status_command i3status -c ~/.config/i3/i3status.conf
 	
     #bar colours
     colors {

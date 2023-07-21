@@ -1,0 +1,1 @@
+/home/Fl_GUI/.vimrc
