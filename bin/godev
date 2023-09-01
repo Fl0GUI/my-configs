@@ -1,0 +1,13 @@
+#!/bin/bash
+
+f () {
+  while : 
+  do 
+    clear 
+    gofmt -w . && \
+    goimports -w . && \
+    go test ./...  $@
+    inotifywait -q -e modify -e create $(find . -name "*.go") 
+  done
+}
+f $@
