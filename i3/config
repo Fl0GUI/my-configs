@@ -14,7 +14,7 @@ set $alt Mod1
 ##############
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:ProFont 8
+font pango:Free mono bold 10
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -59,10 +59,10 @@ bindsym $mod+Ctrl+space move workspace to output next
 ##################
 
 # on keysym
-bindsym $mod+Return exec --no-startup-id xfce4-terminal
+bindsym $mod+Return exec --no-startup-id urxvt
 #bindsym $mod+shift+Return exec nemo
-bindsym $mod+shift+f exec --no-startup-id qutebrowser
-#bindsym $mod+shift+f exec --no-startup-id firefox
+#bindsym $mod+shift+f exec --no-startup-id qutebrowser
+bindsym $mod+shift+f exec --no-startup-id firefox
 #bindsym $mod+m exec cinnamon-settings
 
 # start dmenu (a program launcher)
@@ -77,7 +77,7 @@ bindsym $mod+n exec --no-startup-id xterm nnn
 # autorun
 
 #exec --no-startup-id numlockx on
-exec --no-startup-id feh --bg-max ~/docs/pics/nasa/latest.*
+#exec --no-startup-id feh --bg-max ~/docs/pics/nasa/latest.*
 exec --no-startup-id libinput-gestures-setup start
 ###############
 #### audio ####
@@ -314,26 +314,6 @@ mode "resize" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
-
-set $xrandr [a]uto [l]eft [r]ight [u]p [d]uplicate [o]ff [s]ingle
-
-bindsym $mod+p exec xrandr --auto
-bindsym $mod+Control+r mode "$xrandr"
-
-mode "$xrandr" {
-        bindsym a mode "default", exec --no-startup-id xrandr --auto; exec --no-startup-id libinput-gestures-setup restart;
-        bindsym l mode "default", exec --no-startup-id xrandr --output HDMI1 --auto --left-of eDP1 --mode 2560x1080; exec --no-startup-id xinput --map-to-output "Wacom Intuos PT S 2 Pen stylus" HDMI1; exec --no-startup-id libinput-gestures-setup restart; exec --no-startup-id xrandr --output HDMI1 --primary;
-        bindsym r mode "default", exec --no-startup-id xrandr --auto --output HDMI1 --auto --right-of eDP1; exec --no-startup-id xinput --map-to-output "Wacom Intuos PT S 2 Pen stylus" HDMI1; exec --no-startup-id libinput-gestures-setup restart; exec --no-startup-id xrandr --output HDMI1 --primary;
-        bindsym u mode "default", exec --no-startup-id xrandr --auto --output HDMI1 --auto --above eDP1; exec --no-startup-id xinput --map-to-output "Wacom Intuos PT S 2 Pen stylus" HDMI1; exec --no-startup-id libinput-gestures-setup restart; exec --no-startup-id xrandr --output HDMI1 --primary;
-        bindsym d mode "default", exec --no-startup-id xrandr --auto --output HDMI1 --auto --same-as eDP1; exec --no-startup-id libinput-gestures-setup restart; exec --no-startup-id xrandr --output HDMI1 --primary;
-        bindsym o mode "default", exec --no-startup-id xrandr --output HDMI1 --off; ; exec --no-startup-id xrand --output eDP1 --auto ; exec --no-startup-id libinput-gestures-setup restart;
-        bindsym s mode "default", exec --no-startup-id xrandr --output eDP1 --off; ; exec --no-startup-id xrand --output eDP1 --auto ; exec --no-startup-id libinput-gestures-setup restart;
-
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
-
 
 ########################
 ####     i3 bar     ####
