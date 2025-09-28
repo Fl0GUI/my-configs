@@ -3,9 +3,9 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 
-########################
-#### key momdifiers ####
-########################
+#######################
+#### key modifiers ####
+#######################
 set $mod Mod4
 set $alt Mod1
 
@@ -59,7 +59,7 @@ bindsym $mod+Ctrl+space move workspace to output next
 ##################
 
 # on keysym
-bindsym $mod+Return exec --no-startup-id urxvt
+bindsym $mod+Return exec --no-startup-id wezterm
 #bindsym $mod+shift+Return exec nemo
 #bindsym $mod+shift+f exec --no-startup-id qutebrowser
 bindsym $mod+shift+f exec --no-startup-id firefox
@@ -69,10 +69,7 @@ bindsym $mod+shift+f exec --no-startup-id firefox
 # bindsym $mod+d exec --no-startup-id dmenu_run
 
 # rofi, same but better
-bindsym $mod+d exec --no-startup-id rofi -show run
-
-# nnn
-bindsym $mod+n exec --no-startup-id xterm nnn
+bindsym $mod+d exec --no-startup-id rofi -font "free mono bold 24" -show run
 
 # autorun
 
@@ -175,6 +172,7 @@ for_window [class="Spotify"] move to workspace 6
 #assign [title="Messenger*"] 8
 assign [class="Ferdi"] 8
 for_window [class="Ferdi"] move to workspace 8
+assign [class="discord"] 8
 assign [class="Qsynth"] 9
 for_window [class="Xsnow"] floating enabled;border none
 
@@ -187,11 +185,17 @@ for_window [window_type="notification"] floating enable
 for_window [class=".*"] border normal
 for_window [class="st-256color"] border pixel 0
 for_window [class="Xfce4-terminal"] border pixel 0
+for_window [class="org.wezfurlong.wezterm"] border pixel 2
 for_window [class="Ferdi"] border pixel 0
 for_window [class="Spotify"] border pixel 0
 for_window [class="srb2kart"] border pixel 0
 for_window [class="Steam"] border pixel 0
+for_window [class="steam"] border pixel 0
+for_window [class="vrmonitor"] border pixel 0
 
+##############
+#### gaps ####
+##############
 
 ##################################
 #### auto launch on workspace ####
@@ -251,7 +255,7 @@ bindsym $mod+Shift+0 move container to workspace 10
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+Ctrl+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
@@ -264,16 +268,15 @@ set $yee [t]oggle o[n] o[f]
 bindsym $mod+y mode "$yee"
 
 mode "$yee" {
-
-        bindsym t mode "default", exec --no-startup-id ~/go/bin/yeelight -c toggle
-        bindsym n mode "default", exec --no-startup-id ~/bin/yee turn on
-        bindsym f mode "default", exec --no-startup-id ~/bin/yee turn off
+        bindsym t mode "default", exec --no-startup-id yeecli --ip yeelight toggle
+        bindsym n mode "default", exec --no-startup-id yeecli --ip yeelight turn on
+        bindsym f mode "default", exec --no-startup-id yeecli --ip yeelight turn off
         # back to normal: Enter or Escape
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
 
-set $shutdown [s]hutdown [l]ock [r]eboot [h]ibernate
+set $shutdown [s]hutdown [l]ock [r]eboot suspen[d]
 
 bindsym $mod+x mode "$shutdown"
 
@@ -282,12 +285,22 @@ mode "$shutdown" {
 	bindsym s mode "default" , exec --no-startup-id shutdown now
 	bindsym r mode "default" , exec reboot
 	bindsym l mode "default" , exec --no-startup-id ~/bin/fuzzy-lock
-	bindsym h mode "default" , exec systemctl hibernate
+	bindsym d mode "default" , exec systemctl suspend
 	# exit
 	bindsym Return mode "default"
 	bindsym Escape mode "default"
 }
 
+set $screen [a]uto [d]isplay port [h]dmi [esc]ape
+bindsym $mod+Ctrl+r mode "$screen"
+
+mode "$screen" {
+  bindsym a mode "default" , exec --no-startup-id xrandr --auto
+  bindsym d mode "default" , exec --no-startup-id xrandr --output DP-2 --auto --primary & xrandr --output HDMI-1 --same-as DP-2
+  bindsym h mode "default" , exec --no-startup-id xrandr --output HDMI-1 --auto --primary & xrandr --output DP-2 --same-as HDMI-1
+  bindsym Escape mode "default"
+  bindsym Return mode "default"
+}
 
 
 bindsym $mod+r mode "resize"
@@ -319,7 +332,7 @@ mode "resize" {
 ####     i3 bar     ####
 ########################
 
-bindsym $mod+b bar mode toggle
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
@@ -327,13 +340,14 @@ bar {
 	
     #bar colours
     colors {
-        background #3d3d3d
-        statusline #D6D5D4
-        separator #e36622
+        background #301008
+        statusline #e8d6a0
+        separator #e8d6a0
 
-        focused_workspace  #4c7899 #ecd470 #222222
-        inactive_workspace #333333 #222222 #ecd470
-        urgent_workspace   #2f343a #f23621 #ffffff
+                           #border #body   #text
+        focused_workspace  #ffbf00 #ffbf00 #211a18
+        inactive_workspace #5e2408 #4d1b04 #ecd470
+        urgent_workspace   #a83602 #a83602 #ffffff
         binding_mode       #2f343a #fbd3a7 #101010
     }
 }
@@ -341,6 +355,15 @@ bar {
 ########################
 ####     colours    ####
 ########################
+
+# class                 border  backgr. text    indicator child_border
+client.focused          #873f1b #bd7e26 #f4f4f4 #873f1b   #873f1b
+client.focused_inactive #873f1b #612d13 #f4f4f4 #873f1b   #873f1b
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+client.background       #ffffff
 
 ########################
 

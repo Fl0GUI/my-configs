@@ -11,3 +11,6 @@ set ignorecase
 set smartcase
 set linebreak
 set autoread
+set notimeout
+set ttimeout
+set timeoutlen=10
